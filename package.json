@@ -1,6 +1,6 @@
 {
   "name": "authzen-topaz-proxy",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "AuthZEN to Aserto proxy",
   "main": "src/service/index.ts",
   "type": "module",
