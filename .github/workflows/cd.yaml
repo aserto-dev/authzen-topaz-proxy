@@ -67,11 +67,6 @@ jobs:
         with:
           cmd:  yq eval --inplace '.spec.template.spec.containers[0].image = "ghcr.io/aserto-dev/${{ env.IMAGE_NAME }}:${{ steps.get_version.outputs.VERSION }}"' ./kube-play/demo-${{ env.IMAGE_NAME }}/templates/deployment.yaml
 
-      - name: Update version
-        uses: mikefarah/yq@v4.6.1
-        with:
-          cmd:  yq eval --inplace '.spec.template.spec.containers[0].image = "ghcr.io/aserto-dev/${{ env.IMAGE_NAME }}:${{ steps.get_version.outputs.VERSION }}"' ./kube-play/demo-${{ env.IMAGE_NAME }}-sidecar/templates/deployment.yaml
-
       - name: Commit and push
         id: push
         run: |

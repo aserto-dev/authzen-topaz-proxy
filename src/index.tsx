@@ -7,7 +7,7 @@ root.render(
   <React.StrictMode>
     <Component
       vendor="Topaz"
-      logo="logo.png"
+      logo="topaz.png"
       url="https://www.topaz.sh"
       pdpurl="https://authzen-topaz-proxy.demo.aserto.com"
     />
