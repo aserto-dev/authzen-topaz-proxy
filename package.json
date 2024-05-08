@@ -21,7 +21,7 @@
   "private": true,
   "dependencies": {
     "@aserto/aserto-node": "0.32.0",
-    "@aserto/authzen-interop-react": "^1.0.3",
+    "@aserto/authzen-interop-react": "1.0.5",
     "axios": "^1.6.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
