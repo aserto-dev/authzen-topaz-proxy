@@ -8,19 +8,20 @@ yarn install
 
 ## Build
 
-yarn build
+yarn build-all
 
 ## Run in local developer mode
 
-yarn start
+yarn dev
 
 ## Run in production mode
 
-yarn prod
+yarn server
 
 ## Build and run a local docker image
 
 yarn docker-build
+
 yarn docker-run
 
 ## Release a new version
