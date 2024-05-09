@@ -16,7 +16,7 @@ yarn dev
 
 ## Run in production mode
 
-yarn server
+yarn prod
 
 ## Build and run a local docker image
 

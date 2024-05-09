@@ -8,11 +8,12 @@
     "build-server": "rm -rf build-server && tsc -p service",
     "build": "react-scripts build",
     "clean": "rm -rf build && rm -rf build-server",
-    "client": "PORT=3001 react-scripts start",
+    "client": "PORT=3000 react-scripts start",
     "dev": "concurrently \"yarn run server-dev\" \"yarn run client\"",
     "docker-build": "scripts/docker-build.sh",
     "docker-run": "scripts/docker-run.sh",
     "eject": "react-scripts eject",
+    "prod": "yarn build-all && yarn server",
     "release": "./scripts/release.sh",
     "server-dev": "nodemon ./server/index.ts",
     "server": "node ./build-server/index.js"
