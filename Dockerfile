@@ -1,32 +1,41 @@
-FROM node:18-alpine AS builder
+FROM node:20-alpine as build
+
+RUN apk update && apk upgrade && \
+  apk add --no-cache bash git openssh yarn
 
 RUN mkdir /app
 
-RUN apk update && apk upgrade && apk add yarn git
-
 WORKDIR /app
 
-COPY . .
+COPY package.json .
+COPY yarn.lock .
 
 RUN yarn install
 
-RUN yarn build
+COPY . .
 
+ENV REACT_APP_DOCKER true
 
-FROM node:18-alpine
+RUN yarn run build-all
 
-RUN apk update && apk upgrade && apk add yarn git
+# ---------------
 
-COPY package.json .
+FROM node:20-alpine
 
-COPY yarn.lock .
+RUN mkdir -p /app/build
 
-RUN yarn install --production
+RUN apk update && apk upgrade && apk add yarn && rm -rf /var/cache/apk/*
 
-COPY --from=builder /app .
+WORKDIR /app
+
+RUN yarn add express cors dotenv dotenv-expand @aserto/aserto-node express-jwt@^8.4.1 axios@^1.6.7
+
+COPY --from=build /app/package.json .
+COPY --from=build /app/build ./build
+COPY --from=build /app/build-server ./build-server
 
 EXPOSE 8080
 
 ENV NODE_ENV production
 
-CMD ["yarn", "prod"]
+CMD ["yarn", "run", "server"]

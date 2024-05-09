@@ -3,8 +3,7 @@ import { Request as JWTRequest } from 'express-jwt'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
 import * as dotenvExpand from 'dotenv-expand'
-import { join, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import path from 'path'
 
 import { Authorizer, identityContext, policyContext, policyInstance } from '@aserto/aserto-node'
 import { getConfig } from './config'
@@ -67,11 +66,12 @@ async function handler(req: JWTRequest, res: Response) {
 app.post('/access/v1/evaluation', handler)
 app.post('/access/v1/evaluations', handler)
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
 // main endpoint serves react bundle from /build
-app.use(express.static(join(__dirname, '..', '..', 'build')))
+app.use(express.static(path.join(__dirname, '..', 'build')))
+// serve all /ui client-side routes from the /build bundle
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'))
+})
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`)
