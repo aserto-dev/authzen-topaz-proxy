@@ -1,6 +1,6 @@
 {
   "name": "authzen-topaz-proxy",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "AuthZEN to Aserto proxy",
   "main": "./build-server/index.js",
   "scripts": {
