@@ -25,30 +25,22 @@ const authClient = new Authorizer({
 
 const PORT = authzOptions.port ?? 8080
 
-const pathMappings: Record<string, string> = {
-  can_read_user: 'todoApp.GET.users.__userID',
-  can_read_todos: 'todoApp.GET.todos',
-  can_create_todo: 'todoApp.POST.todos',
-  can_update_todo: 'todoApp.PUT.todos.__id',
-  can_delete_todo: 'todoApp.DELETE.todos.__id',
-}
-
 const instanceName = authzOptions.instanceName || 'todo'
 const instanceLabel = authzOptions.instanceLabel || 'todo'
 
 async function handler(req: JWTRequest, res: Response) {
   const request: AuthZenRequest = req.body
   const identity = request.subject?.identity
-  const policyPath = pathMappings[request?.action?.name]
+  const actionName = request.action?.name
   const ownerID = request.resource?.ownerID
   let decision = false
-  if (identity && policyPath) {
+  if (identity && actionName) {
     try {
       decision =
         (await authClient.Is({
           identityContext: identityContext(identity, 'SUB'),
           policyInstance: policyInstance(instanceName, instanceLabel),
-          policyContext: policyContext(policyPath, ['allowed']),
+          policyContext: policyContext(`todoApp.${actionName}`, ['allowed']),
           resourceContext: ownerID ? { ownerID } : {},
         })) ?? false
     } catch (e) {
