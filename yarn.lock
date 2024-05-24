@@ -37,10 +37,10 @@
     express "^4.18.2"
     jwt-decode "^3.1.2"
 
-"@aserto/authzen-interop-react@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@aserto/authzen-interop-react/-/authzen-interop-react-1.0.6.tgz#e6290a2f3915b3c42d10891a0b907a66038116db"
-  integrity sha512-6p1h2W2Hsxs6O2ajMRlLBdcchuB4XK0/OZLrEUF44y1fO7SnVKRlo28gtDslpeyr7xnyu5UiDENgZYxrzd97GA==
+"@aserto/authzen-interop-react@1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@aserto/authzen-interop-react/-/authzen-interop-react-1.0.7.tgz#545442c1266e243984adb099d70f59202de428b8"
+  integrity sha512-YuGQt0suys1SbGczvy87u3LvrMU6i1fGCktl6nHJzXSY6AIRrvcYpYETR84tRewvacBkwAL+x19HtY4NZfHeBQ==
   dependencies:
     bootstrap "^5.3.3"
     prism-themes "^1.9.0"
