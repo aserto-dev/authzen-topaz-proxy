@@ -30,9 +30,9 @@ const instanceLabel = authzOptions.instanceLabel || 'todo'
 
 async function handler(req: JWTRequest, res: Response) {
   const request: AuthZenRequest = req.body
-  const identity = request.subject?.identity
+  const identity = request.subject?.id
   const actionName = request.action?.name
-  const ownerID = request.resource?.ownerID
+  const resource = request.resource
   let decision = false
   if (identity && actionName) {
     try {
@@ -41,7 +41,7 @@ async function handler(req: JWTRequest, res: Response) {
           identityContext: identityContext(identity, 'SUB'),
           policyInstance: policyInstance(instanceName, instanceLabel),
           policyContext: policyContext(`todoApp.${actionName}`, ['allowed']),
-          resourceContext: ownerID ? { ownerID } : {},
+          resourceContext: resource ?? {},
         })) ?? false
     } catch (e) {
       console.error(e)

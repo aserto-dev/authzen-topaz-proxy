@@ -1,17 +1,25 @@
 export interface AuthZenRequest {
   subject: {
-    identity: string
+    type: string
+    id: string
+    properties?: {
+      [key: string]: string
+    }
   }
   action: {
     name: string
+    properties?: {
+      [key: string]: string
+    }
   }
   resource?: {
-    ownerID: string
-    type?: string
+    type: string
+    id: string
+    properties?: {
+      [key: string]: string
+    }
   }
   context?: {
     [key: string]: string
   }
 }
-
-
