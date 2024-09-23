@@ -7,7 +7,7 @@ import path from 'path'
 
 import { Authorizer, identityContext, policyContext, policyInstance } from '@aserto/aserto-node'
 import { getConfig } from './config'
-import { AuthZenRequest } from './interface'
+import { EvaluationRequest, EvaluationsRequest } from './interface'
 
 dotenvExpand.expand(dotenv.config())
 
@@ -28,8 +28,8 @@ const PORT = authzOptions.port ?? 8080
 const instanceName = authzOptions.instanceName || 'todo'
 const instanceLabel = authzOptions.instanceLabel || 'todo'
 
-async function handler(req: JWTRequest, res: Response) {
-  const request: AuthZenRequest = req.body
+async function evaluationHandler(req: JWTRequest, res: Response) {
+  const request: EvaluationRequest = req.body
   const identity = request.subject?.id
   const actionName = request.action?.name
   const resource = request.resource
@@ -41,7 +41,7 @@ async function handler(req: JWTRequest, res: Response) {
           identityContext: identityContext(identity, 'SUB'),
           policyInstance: policyInstance(instanceName, instanceLabel),
           policyContext: policyContext(`todoApp.${actionName}`, ['allowed']),
-          resourceContext: resource ?? {},
+          resourceContext: { ...resource },
         })) ?? false
     } catch (e) {
       console.error(e)
@@ -55,8 +55,36 @@ async function handler(req: JWTRequest, res: Response) {
   res.status(200).send(response)
 }
 
-app.post('/access/v1/evaluation', handler)
-app.post('/access/v1/evaluations', handler)
+async function evaluationsHandler(req: JWTRequest, res: Response) {
+  const request: EvaluationsRequest = req.body
+  const evaluations = request.evaluations?.map((e) => ({
+    subject: e.subject ?? request.subject,
+    action: e.action ?? request.action,
+    resource: e.resource ?? request.resource,
+    context: e.context ?? request.context,
+  })) ?? [request]
+  try {
+    const evalResponse = await Promise.all(
+      evaluations.map(async (e) => {
+        const decision =
+          (await authClient.Is({
+            identityContext: identityContext(e.subject!.id, 'SUB'),
+            policyInstance: policyInstance(instanceName, instanceLabel),
+            policyContext: policyContext(`todoApp.${e.action!.name}`, ['allowed']),
+            resourceContext: { ...e.resource },
+          })) ?? false
+        return { decision }
+      })
+    )
+    res.status(200).json({ evaluations: evalResponse })
+  } catch (error) {
+    console.error(error)
+    res.status(422).send({ error: (error as Error).message })
+  }
+}
+
+app.post('/access/v1/evaluation', evaluationHandler)
+app.post('/access/v1/evaluations', evaluationsHandler)
 
 // main endpoint serves react bundle from /build
 app.use(express.static(path.join(__dirname, '..', 'build')))
