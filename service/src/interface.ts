@@ -38,3 +38,28 @@ export interface Evaluations {
 export interface EvaluationsRequest extends Evaluations {
   evaluations?: Evaluations[]
 }
+
+
+interface CustomHeaders {
+  [key: string]: string;
+}
+export interface AuthZENConfig {
+  baseUrl?: string
+  evaluationEndpoint?: string
+  evaluationsEndpoint?: string
+  headers?: CustomHeaders
+}
+
+export interface EvaluationResponse {
+  decision: boolean
+  context: Context
+}
+
+export interface EvaluationsResponse {
+  decisions: EvaluationResponse[]
+}
+
+export interface AuthZEN {
+  evaluation(request: EvaluationRequest): Promise<EvaluationResponse>
+  evaluations(request: EvaluationsRequest): Promise<EvaluationsResponse>
+}

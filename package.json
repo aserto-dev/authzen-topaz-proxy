@@ -23,7 +23,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@aserto/aserto-node": "0.32.0",
+    "@aserto/aserto-node": "0.33.2",
     "@aserto/authzen-interop-react": "1.0.8",
     "axios": "^1.6.7",
     "cors": "^2.8.5",
