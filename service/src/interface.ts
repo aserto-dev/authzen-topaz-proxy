@@ -1,4 +1,4 @@
-import { Application } from "express"
+import { Application, Router } from "express"
 
 export interface AuthZENObject {
   type: string
@@ -67,5 +67,5 @@ export interface AuthZENResolver {
 }
 
 export interface AuthZEN {
-  registerResolver(app: Application, config: AuthZENConfig, resolver: AuthZENResolver): void
+  registerResolver(config: AuthZENConfig, resolver: AuthZENResolver): Router
 }

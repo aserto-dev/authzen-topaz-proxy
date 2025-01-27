@@ -33,7 +33,7 @@ const authZENConfig: AuthZENConfig = {
   headers: {},
 }
 const authZenResolver = new TopazAuthzen(authClient, authzOptions)
-new AuthZENImpl().registerResolver(app, authZENConfig, authZenResolver)
+app.use(new AuthZENImpl().registerResolver(authZENConfig, authZenResolver))
 
 
 // main endpoint serves react bundle from /build

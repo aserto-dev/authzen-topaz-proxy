@@ -1,11 +1,13 @@
 import { Application } from 'express';
 import { AuthZEN, AuthZENConfig, AuthZENResolver, EvaluationRequest, EvaluationsRequest } from './interface';
 import { Request as JWTRequest } from 'express-jwt'
-import { Response } from 'express'
+import { Router, Response } from 'express'
 export class AuthZENImpl implements AuthZEN {
-  registerResolver(app: Application, config: AuthZENConfig, resolver: AuthZENResolver): void {
+  registerResolver(config: AuthZENConfig, resolver: AuthZENResolver): Router {
     const evaluationEndpoint = config.evaluationEndpoint || '/access/v1/evaluation'
     const evaluationsEndpoint = config.evaluationsEndpoint || '/access/v1/evaluations'
+    const router = Router();
+
     async function evaluationHandler(req: JWTRequest, res: Response) {
       try {
         const request: EvaluationRequest = req.body
@@ -28,7 +30,10 @@ export class AuthZENImpl implements AuthZEN {
       }
     }
 
-    app.post(evaluationEndpoint, evaluationHandler)
-    app.post(evaluationsEndpoint, evaluationsHandler)
+    router.post(evaluationEndpoint, evaluationHandler)
+    router.post(evaluationsEndpoint, evaluationsHandler)
+
+    return router
   }
 }
+
