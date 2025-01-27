@@ -1,3 +1,5 @@
+import { Application } from "express"
+
 export interface AuthZENObject {
   type: string
   id: string
@@ -59,7 +61,11 @@ export interface EvaluationsResponse {
   decisions: EvaluationResponse[]
 }
 
-export interface AuthZEN {
+export interface AuthZENResolver {
   evaluation(request: EvaluationRequest): Promise<EvaluationResponse>
   evaluations(request: EvaluationsRequest): Promise<EvaluationsResponse>
+}
+
+export interface AuthZEN {
+  registerResolver(app: Application, config: AuthZENConfig, resolver: AuthZENResolver): void
 }

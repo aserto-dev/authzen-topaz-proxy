@@ -1,14 +1,12 @@
 import { Authorizer, AuthzOptions, identityContext, policyContext, policyInstance } from "@aserto/aserto-node"
-import { AuthZEN, AuthZENConfig, EvaluationRequest, EvaluationResponse, EvaluationsRequest, EvaluationsResponse } from "./interface"
+import { AuthZENResolver, AuthZENConfig, EvaluationRequest, EvaluationResponse, EvaluationsRequest, EvaluationsResponse } from "./interface"
 
-export class TopazAuthzen implements AuthZEN {
-  private config: AuthZENConfig
+export class TopazAuthzen implements AuthZENResolver {
   private authClient: Authorizer
   private authzOptions: AuthzOptions
   private instanceName: string
 
-  constructor(config: AuthZENConfig, authClient: Authorizer, authzOptions: AuthzOptions) {
-    this.config = config
+  constructor(authClient: Authorizer, authzOptions: AuthzOptions) {
     this.authzOptions = authzOptions
     this.authClient = authClient
     this.instanceName = this.authzOptions.instanceName || 'todo'

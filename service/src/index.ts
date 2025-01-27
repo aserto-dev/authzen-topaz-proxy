@@ -1,14 +1,14 @@
-import express, { Response } from 'express'
-import { Request as JWTRequest } from 'express-jwt'
+import express from 'express'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
 import * as dotenvExpand from 'dotenv-expand'
 import path from 'path'
 
-import { Authorizer, identityContext, policyContext, policyInstance } from '@aserto/aserto-node'
+import { Authorizer,} from '@aserto/aserto-node'
 import { getConfig } from './config'
-import { EvaluationRequest, EvaluationsRequest } from './interface'
 import { TopazAuthzen } from './topaz'
+import { AuthZENImpl } from './authzen'
+import { AuthZENConfig } from './interface';
 
 dotenvExpand.expand(dotenv.config())
 
@@ -26,32 +26,15 @@ const authClient = new Authorizer({
 
 const PORT = authzOptions.port ?? 8080
 
-const authZen = new TopazAuthzen({}, authClient, authzOptions)
-
-async function evaluationHandler(req: JWTRequest, res: Response) {
-  try {
-    const request: EvaluationRequest = req.body
-    res.status(200).send(authZen.evaluation(request))
-
-  } catch (error) {
-    console.error(error)
-    res.status(422).send({ error: (error as Error).message })
-  }
+// register AuthZEN resolver
+const authZENConfig: AuthZENConfig = {
+  evaluationEndpoint: '/access/v1/evaluation',
+  evaluationsEndpoint: '/access/v1/evaluations',
+  headers: {},
 }
+const authZenResolver = new TopazAuthzen(authClient, authzOptions)
+new AuthZENImpl().registerResolver(app, authZENConfig, authZenResolver)
 
-
-async function evaluationsHandler(req: JWTRequest, res: Response) {
-  try {
-    const request: EvaluationsRequest = req.body
-    res.status(200).send(authZen.evaluations(request))
-  } catch (error) {
-    console.error(error)
-    res.status(422).send({ error: (error as Error).message })
-  }
-}
-
-app.post('/access/v1/evaluation', evaluationHandler)
-app.post('/access/v1/evaluations', evaluationsHandler)
 
 // main endpoint serves react bundle from /build
 app.use(express.static(path.join(__dirname, '..', 'build')))
