@@ -32,7 +32,7 @@ jobs:
     if: github.event_name == 'push' && ( github.ref == 'refs/heads/main' || github.ref == 'refs/heads/beta' || startsWith(github.ref, 'refs/tags/v') )
     steps:
       - name: Read Configuration
-        uses: hashicorp/vault-action@v2.5.0
+        uses: hashicorp/vault-action@v3
         id: vault
         with:
           url: https://vault.eng.aserto.com/
@@ -40,7 +40,7 @@ jobs:
           secrets: |
             kv/data/github                  "USERNAME"            | DOCKER_USERNAME;
             kv/data/github                  "DOCKER_PUSH_TOKEN"   | DOCKER_PASSWORD;
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Login to GitHub Packages Docker Registry
@@ -71,7 +71,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/beta'
     steps:
       - name: Read Configuration
-        uses: hashicorp/vault-action@v2.5.0
+        uses: hashicorp/vault-action@v3
         id: vault
         with:
           url: https://vault.eng.aserto.com/
@@ -93,7 +93,7 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Read Configuration
-        uses: hashicorp/vault-action@v2.5.0
+        uses: hashicorp/vault-action@v3
         id: vault
         with:
           url: https://vault.eng.aserto.com/

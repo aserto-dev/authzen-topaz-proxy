@@ -33,7 +33,7 @@ jobs:
           echo ::set-output name=VERSION::$IMAGE_VERSION
 
       - name: Read Configuration
-        uses: hashicorp/vault-action@v2.5.0
+        uses: hashicorp/vault-action@v3
         id: vault
         with:
           url: https://vault.eng.aserto.com/
@@ -42,7 +42,7 @@ jobs:
             kv/data/github  "SSH_PRIVATE_KEY"     | SSH_PRIVATE_KEY;
             kv/data/github  "READ_WRITE_TOKEN"    | READ_WRITE_TOKEN;
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup git
         run: |
