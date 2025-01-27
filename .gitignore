@@ -36,3 +36,4 @@ yalc.lock
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+tsconfig.tsbuildinfo
