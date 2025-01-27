@@ -1,5 +1,18 @@
-import { Authorizer, AuthzOptions, identityContext, policyContext, policyInstance } from "@aserto/aserto-node"
-import { AuthZENResolver, AuthZENConfig, EvaluationRequest, EvaluationResponse, EvaluationsRequest, EvaluationsResponse } from "./interface"
+import {
+  Authorizer,
+  AuthzOptions,
+  identityContext,
+  policyContext,
+  policyInstance,
+} from '@aserto/aserto-node'
+
+import {
+  AuthZENResolver,
+  EvaluationRequest,
+  EvaluationResponse,
+  EvaluationsRequest,
+  EvaluationsResponse,
+} from './interface'
 
 export class TopazAuthzen implements AuthZENResolver {
   private authClient: Authorizer
@@ -46,9 +59,9 @@ export class TopazAuthzen implements AuthZENResolver {
       evaluations.map(async (e) => {
         const decision =
           (await this.authClient.Is({
-            identityContext: identityContext(e.subject!.id, 'SUB'),
+            identityContext: identityContext(e.subject?.id || '', 'SUB'),
             policyInstance: policyInstance(this.instanceName),
-            policyContext: policyContext(`todoApp.${e.action!.name}`, ['allowed']),
+            policyContext: policyContext(`todoApp.${e.action?.name}`, ['allowed']),
             resourceContext: { ...e.resource },
           })) ?? false
         return { decision, context: {} }

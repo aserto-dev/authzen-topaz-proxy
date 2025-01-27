@@ -1,14 +1,14 @@
-import express from 'express'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
 import * as dotenvExpand from 'dotenv-expand'
+import express from 'express'
 import path from 'path'
+import { Authorizer } from '@aserto/aserto-node'
 
-import { Authorizer,} from '@aserto/aserto-node'
-import { getConfig } from './config'
-import { TopazAuthzen } from './topaz'
 import { AuthZENImpl } from './authzen'
-import { AuthZENConfig } from './interface';
+import { getConfig } from './config'
+import { AuthZENConfig } from './interface'
+import { TopazAuthzen } from './topaz'
 
 dotenvExpand.expand(dotenv.config())
 
@@ -34,7 +34,6 @@ const authZENConfig: AuthZENConfig = {
 }
 const authZenResolver = new TopazAuthzen(authClient, authzOptions)
 app.use(new AuthZENImpl().registerResolver(authZENConfig, authZenResolver))
-
 
 // main endpoint serves react bundle from /build
 app.use(express.static(path.join(__dirname, '..', 'build')))

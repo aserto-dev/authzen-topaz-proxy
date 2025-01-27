@@ -1,4 +1,4 @@
-import { Application, Router } from "express"
+import { Router } from 'express'
 
 export interface AuthZENObject {
   type: string
@@ -8,9 +8,9 @@ export interface AuthZENObject {
   }
 }
 
-export interface Subject extends AuthZENObject {}
+export type Subject = AuthZENObject
 
-export interface Resource extends AuthZENObject {}
+export type Resource = AuthZENObject
 
 export interface Action {
   name: string
@@ -41,9 +41,8 @@ export interface EvaluationsRequest extends Evaluations {
   evaluations?: Evaluations[]
 }
 
-
 interface CustomHeaders {
-  [key: string]: string;
+  [key: string]: string
 }
 export interface AuthZENConfig {
   baseUrl?: string
