@@ -6,9 +6,9 @@ export interface AuthZENObject {
   }
 }
 
-export interface Subject extends AuthZENObject {}
+export interface Subject extends AuthZENObject { }
 
-export interface Resource extends AuthZENObject {}
+export interface Resource extends AuthZENObject { }
 
 export interface Action {
   name: string
@@ -37,4 +37,17 @@ export interface Evaluations {
 
 export interface EvaluationsRequest extends Evaluations {
   evaluations?: Evaluations[]
+}
+
+
+export interface AuthZENConfig {
+  baseUrl: string
+  evaluationEndpoint?: string
+  evaluationsEndpoint?: string
+  headers?: { [key: string]: string }
+}
+export interface AuthZEN {
+  config: AuthZENConfig
+  evaluation: (evaluationRequest: EvaluationRequest) => Promise<boolean>
+  evaluations: (evaluationsRequest: EvaluationsRequest) => Promise<boolean[]>
 }

@@ -25,7 +25,7 @@
   "dependencies": {
     "@aserto/aserto-node": "0.32.0",
     "@aserto/authzen-interop-react": "1.0.8",
-    "axios": "^1.6.7",
+    "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "dotenv-expand": "^11.0.6",
